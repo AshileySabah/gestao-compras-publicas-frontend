@@ -49,6 +49,29 @@ export type Pagina<T> = {
   totalPaginas: number
 }
 
+export type Contagem = {
+  descricao: string
+  quantidade: number
+}
+
+export type LinhaRejeitada = {
+  linha: number
+  numeroContrato: string | null
+  motivo: string
+  detalhe: string
+}
+
+export type ResultadoImportacao = {
+  linhasLidas: number
+  importadas: number
+  rejeitadas: number
+  tempoProcessamentoMs: number
+  arquivoItensEnviado: boolean
+  rejeicoesPorMotivo: Contagem[]
+  modalidadesPorOrigem: Contagem[]
+  linhasRejeitadas: LinhaRejeitada[]
+}
+
 export type ErroApi = {
   status: number
   mensagem: string
