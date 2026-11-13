@@ -1,5 +1,32 @@
 import { api } from './cliente'
-import type { Contratacao, Modalidade, Orgao, Pagina } from './tipos'
+import type { Contratacao, Fornecedor, Modalidade, Orgao, Pagina } from './tipos'
+
+export type ContratacaoRequest = {
+  numeroContrato: string | null
+  codigoUg: string | null
+  nomeUg: string | null
+  objeto: string | null
+  modalidade: string | null
+  dataAssinatura: string | null
+  dataPublicacaoDou: string | null
+  dataInicioVigencia: string | null
+  dataFimVigencia: string | null
+  valorInicial: number | null
+  valorFinal: number | null
+  numeroLicitacao: string | null
+  orgaoId: number | null
+  novoOrgao: {
+    codigo: string | null
+    nome: string | null
+    codigoOrgaoSuperior: string | null
+    nomeOrgaoSuperior: string | null
+  } | null
+  fornecedorId: number | null
+  novoFornecedor: {
+    documento: string | null
+    nome: string | null
+  } | null
+}
 
 export type FiltroContratacao = {
   orgaoId: number | null
@@ -42,6 +69,23 @@ export async function listarContratacoes(
   parametros.append('size', String(tamanho))
   parametros.append('sort', `${ordenacao.campo},${ordenacao.direcao}`)
   const resposta = await api.get<Pagina<Contratacao>>('/contratacoes', { params: parametros })
+  return resposta.data
+}
+
+export async function buscarContratacao(id: string): Promise<Contratacao> {
+  const resposta = await api.get<Contratacao>(`/contratacoes/${id}`)
+  return resposta.data
+}
+
+export async function salvarContratacao(id: string | undefined, dados: ContratacaoRequest): Promise<Contratacao> {
+  const resposta = id
+    ? await api.put<Contratacao>(`/contratacoes/${id}`, dados)
+    : await api.post<Contratacao>('/contratacoes', dados)
+  return resposta.data
+}
+
+export async function buscarFornecedores(busca: string): Promise<Fornecedor[]> {
+  const resposta = await api.get<Fornecedor[]>('/fornecedores', { params: { busca } })
   return resposta.data
 }
 
