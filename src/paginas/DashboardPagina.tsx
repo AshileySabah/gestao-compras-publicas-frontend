@@ -5,7 +5,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 import { useTheme } from '@mui/material/styles'
-import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { mensagemDeErro } from '../api/cliente'
 import { buscarEvolucaoMensal, buscarQuantidadePorModalidade, buscarValorPorOrgao } from '../api/graficos'
 import type { QuantidadePorModalidade, ValorPorMes, ValorPorOrgao } from '../api/tipos'
@@ -107,6 +107,12 @@ export function DashboardPagina() {
   const cor = tema.palette.primary.main
   const grade = tema.palette.divider
   const textoEixo = { fill: tema.palette.text.secondary, fontSize: 12 }
+  const legenda = (
+    <Legend
+      verticalAlign="bottom"
+      formatter={(texto) => <span style={{ color: tema.palette.text.secondary, fontSize: 13 }}>{texto}</span>}
+    />
+  )
   const orgaos = dados.orgaos.map((orgao) => ({ ...orgao, rotulo: `${encurtar(orgao.nome, 38)} (${orgao.codigo})` }))
 
   return (
@@ -135,12 +141,13 @@ export function DashboardPagina() {
                     linhas={(orgao) => [
                       `${orgao.nome} (${orgao.codigo})`,
                       `Valor final: ${formatarMoeda(orgao.valorTotal)}`,
-                      orgao.unidadeExemplo ? `UG de exemplo: ${orgao.unidadeExemplo}` : null,
+                      orgao.unidadeExemplo ? `Exemplo de unidade: ${orgao.unidadeExemplo}` : null,
                     ]}
                   />
                 )}
               />
-              <Bar dataKey="valorTotal" fill={cor} radius={[0, 4, 4, 0]} maxBarSize={24} />
+              {legenda}
+              <Bar dataKey="valorTotal" name="Valor final somado (R$)" fill={cor} radius={[0, 4, 4, 0]} maxBarSize={24} />
             </BarChart>
           </ResponsiveContainer>
         </CartaoGrafico>
@@ -168,7 +175,8 @@ export function DashboardPagina() {
                     />
                   )}
                 />
-                <Bar dataKey="quantidade" fill={cor} radius={[0, 4, 4, 0]} maxBarSize={24} />
+                {legenda}
+                <Bar dataKey="quantidade" name="Quantidade de contratações" fill={cor} radius={[0, 4, 4, 0]} maxBarSize={24} />
               </BarChart>
             </ResponsiveContainer>
           </CartaoGrafico>
@@ -199,9 +207,11 @@ export function DashboardPagina() {
                     />
                   )}
                 />
+                {legenda}
                 <Line
                   type="linear"
                   dataKey="valorTotal"
+                  name="Valor final por mês de assinatura (R$)"
                   stroke={cor}
                   strokeWidth={2}
                   dot={{ r: 4, fill: cor, stroke: tema.palette.background.paper, strokeWidth: 2 }}
