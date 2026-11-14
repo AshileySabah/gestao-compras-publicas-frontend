@@ -72,6 +72,25 @@ export type ResultadoImportacao = {
   linhasRejeitadas: LinhaRejeitada[]
 }
 
+export type ValorPorOrgao = {
+  codigo: string
+  nome: string
+  valorTotal: number
+  unidadeExemplo: string | null
+}
+
+export type QuantidadePorModalidade = {
+  modalidade: string
+  descricao: string
+  quantidade: number
+}
+
+export type ValorPorMes = {
+  mes: string
+  valorTotal: number
+  quantidade: number
+}
+
 export type ErroApi = {
   status: number
   mensagem: string
