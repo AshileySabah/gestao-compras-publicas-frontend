@@ -10,34 +10,20 @@ React 19 + TypeScript, Vite, MUI (Material UI), Recharts, react-router-dom e axi
 
 ## Como executar
 
-Pré-requisitos: Node.js e o back-end configurado.
+Pré-requisitos: JDK 17 ou mais recente para o back, Node.js 20.19.0 ou maior para o front e o `.env` de cada repositório criado a partir do `.env.example`. As variáveis do banco estão explicadas no README do back-end; no front, `API_URL` é o endereço do back.
 
-```
-npm install
-cp .env.example .env
-```
+Os dois repositórios têm o mesmo script `dev.sh`, executado na raiz do repositório:
 
-No `.env`, `API_URL` é o endereço do back-end (padrão `http://localhost:8080`).
+| Caso                                                    | Comando        | Endereço                    |
+| ------------------------------------------------------- | -------------- | --------------------------- |
+| Back com os dados do banco                              | `./dev.sh -BD` | `http://localhost:8080/api` |
+| Back zerado (apaga tabelas e dados e recria tudo vazio) | `./dev.sh -BZ` | `http://localhost:8080/api` |
+| Front em desenvolvimento (com o back já rodando)        | `./dev.sh -F`  | `http://localhost:5173`     |
+| Front e back juntos                                     | `./dev.sh -FB` | `http://localhost:8080`     |
 
-**Desenvolvimento**
+Os comandos são para o Git Bash, Linux ou macOS. No PowerShell ou no cmd, use `.\dev.cmd` com a mesma flag (ex.: `.\dev.cmd -BZ`).
 
-Com o back-end rodando:
-
-```
-npm run dev
-```
-
-Acesse `http://localhost:5173`. As chamadas para `/api` são repassadas ao back-end.
-
-**Aplicação completa (front servido pelo back-end)**
-
-Com os dois repositórios em pastas lado a lado:
-
-```
-npm run build:backend
-```
-
-Isso gera o front dentro do back-end. Depois, suba o back-end e acesse `http://localhost:8080`.
+Para subir só o repositório em que você está (`-BD` e `-BZ` no back, `-F` no front), não é preciso ter o outro clonado. Nos demais casos, inclusive `-FB`, os dois repositórios precisam estar clonados na mesma pasta, e o comando pode ser executado em qualquer um deles.
 
 ## Como usar
 
